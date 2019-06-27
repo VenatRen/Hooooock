@@ -29,10 +29,10 @@ function reducer(state, action){
 
             }
         case 'setPass':{
-            return {...state, password: action.field}
+            return {...state, password: action.field,errorText: state.secondPassword===action.field ? "": "Password doesn`t match"}
             }
         case 'confirmPass':{
-            return {...state, secondPassword: action.field}
+            return {...state, secondPassword: action.field,errorText: state.password===action.field ? "":"password doesn`t match"}
             }    
 
         default: 
