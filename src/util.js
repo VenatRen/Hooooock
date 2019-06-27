@@ -1,9 +1,13 @@
-export async function login({username, password}){
+import { functionTypeAnnotation } from "@babel/types";
+
+export async function login({username, password, secondPassword}){
     return new Promise( (resolve, reject)=>{
         setTimeout( ()=>{ 
-            console.log(username, password);
-            if( (username=="user") && (password=='pass') ){
+            if( (username=="user") && (password=='pass') && (password==secondPassword) ){
                 resolve();
+            }
+            if( (password!=secondPassword) ){
+                reject("");
             }
             else{
                 reject("wrong username or password");
@@ -11,3 +15,4 @@ export async function login({username, password}){
         }, 1000);
     }  )
 }
+

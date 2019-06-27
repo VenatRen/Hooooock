@@ -12,7 +12,7 @@ function reducer(state, action){
             }
         case 'error':
             {
-                return {...state, errorText: "Incorrect username or password", password: ""};
+                return {...state, errorText: "Incorrect username or password", password: "", secondPassword: ""};
             }
         case 'disabled':
             {
@@ -31,6 +31,9 @@ function reducer(state, action){
         case 'setPass':{
             return {...state, password: action.field}
             }
+        case 'confirmPass':{
+            return {...state, secondPassword: action.field}
+            }    
 
         default: 
             return state;
@@ -58,7 +61,8 @@ function App(props){
         password: "",
         isDisabled: false,
         isLoggedIn: false,
-        errorText: ""
+        errorText: "",
+        secondPassword: ""
     }
 
 
@@ -70,7 +74,9 @@ function App(props){
         password,
         isDisabled,
         isLoggedIn,
-        errorText} = state;
+        errorText,
+        secondPassword
+        } = state;
 
 
     const doLogin = async (e)=>{
@@ -82,7 +88,7 @@ function App(props){
         e.preventDefault()
         
         try{
-            await login({username:userLogin, password:password});
+            await login({username:userLogin, password:password, secondPassword:secondPassword});
             dispatch( {type: 'login'});
             //setIsLoggedIn(true);
             //setErrorText("");
@@ -93,13 +99,13 @@ function App(props){
             //setPassword('');
             //setErrorText("Incorrect username or password");
         }
-
+        
         dispatch( {type: 'disabled', off: false}); 
         //setIsDisabled(false);
 
         return false;
     }
-
+    
     return (
         <div>
             { isLoggedIn ? <><h1>Hello {userLogin} </h1> <button onClick={(e)=>{dispatch( {type:'logout'} ) } }>Logout</button></> : 
@@ -109,6 +115,7 @@ function App(props){
                 <span>{errorText}</span>
                 <input type="text" placeholder="username" onChange={(event)=>{ dispatch({type: 'setName', field: event.currentTarget.value})   }} value={userLogin} />
                 <input type="password" placeholder="password" autoComplete="new-password" onChange={(event)=>{ dispatch({type: 'setPass', field: event.currentTarget.value}) }} value={password}/>
+                <input type="password" placeholder="secondPassword" autoComplete="new-password" onChange={(event)=>{ dispatch({type: 'confirmPass', field: event.currentTarget.value}) }} value={secondPassword}/>
                 <button type="submit" disabled={isDisabled}>Login</button>
         
 
